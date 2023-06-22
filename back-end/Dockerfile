@@ -4,7 +4,11 @@ RUN mkdir -p /usr/src/node-app && chown -R node:node /usr/src/node-app
 
 WORKDIR /usr/src/node-app
 
+RUN ls -la
+
 COPY package.json yarn.lock ./
+
+RUN ls -la
 
 USER node
 

@@ -2,7 +2,9 @@ version: '3'
 
 services:
   node-app:
-    build: .
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile
     image: node-app
     environment:
       - MONGODB_URL=mongodb://mongodb:27017/node-boilerplate
@@ -11,7 +13,8 @@ services:
     depends_on:
       - mongodb
     volumes:
-      - .:/usr/src/node-app
+      - ./back-end:/usr/src/node-app
+      - /usr/src/node-app/node_modules
     networks:
       - node-network
 
@@ -32,6 +35,7 @@ services:
       - '4000:4000'
     volumes:
       - ./front-end:/app
+      - /app/node_modules
     networks:
       - node-network
 
