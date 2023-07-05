@@ -1,5 +1,6 @@
 const User = require('../models');
 const { Resume } = require('../models');
+const ResumeParser = require('simple-resume-parser');
 
 /**
  * Retrieves all resumes associated with a given user ID
@@ -67,9 +68,32 @@ const saveResume = async (file, fileName, userId, educationAnalysis, workAnalysi
   return savedResume;
 };
 
+/**
+ * Convert a TEXT resume to JSON document
+ * @param {String} resume - The text resume.
+ * @returns {Promise<String>}  A string representation of the processed JSON document.
+ * @throws {Error} If there's an error during the Document convertion.
+ */
+
+async function parseResume(resume) {
+  //Read text file
+  const parsedResume = new ResumeParser(resume);
+  
+  //Convert to JSON Object
+  const resumeJSON = parsedResume.parseToJSON()
+  .then( data => {
+    return data;
+  })
+  .catch(error => {
+    throw new Error();
+  })
+  return resumeJSON;
+}
+
 module.exports = {
     getResumesByUserId,
     deleteResumeById,
     saveResume,
+    parseResume,
   };
   

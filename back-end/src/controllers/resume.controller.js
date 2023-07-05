@@ -19,7 +19,7 @@ const submitResume = catchAsync(async (req, res) => {
   const resumeText = await vertexService.convertPdfToText(req.body.file);
   // 2. Parse the resume text into a structured JSON object.
   // TODO: const resumeJson = await resumeParser.parseResume(resumeText, 'json');
-
+  const resumeJson = await resumeService.parseResume(resumeText);
   // 3. Generate a response to the resume using the Vertex AI language model.
   const educationAnalysis = await vertexService.generateResponseToQuestion(resumeText, educationQuestion);
   const workAnalysis = await vertexService.generateResponseToQuestion(resumeText, workQuestion);
