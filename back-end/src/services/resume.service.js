@@ -1,5 +1,5 @@
 const User = require('../models');
-const Resume = require('../models');
+const { Resume } = require('../models');
 
 /**
  * Retrieves all resumes associated with a given user ID
@@ -28,8 +28,48 @@ const deleteResumeById = async (userId, resumeId) => {
     await Resume.deleteOne({ _id: resumeId });
   };
   
+/**
+ * Create a new resume and save it to the database
+ * @param {Buffer} file - The file buffer of the resume pdf
+ * @param {String} fileName - The name of the pdf file
+ * @param {String} userId - The id of the user who uploaded the resume
+ * @param {Object} educationAnalysis - The education analysis result from Vertex AI
+ * @param {Object} workAnalysis - The work experience analysis result from Vertex AI
+ * @param {String} overallAnalysis - The overall analysis result from Vertex AI
+ * @param {Stirng} scoreAnalysis - The overall score from Vertex AI
+ * @returns {Promise} Returns a Promise that resolves to the saved Resume object if successful or rejects if an error occurs
+ */
+const saveResume = async (file, fileName, userId, educationAnalysis, workAnalysis, overallAnalysis, scoreAnalysis) => {
+  // Use regex to extract all 2-digit numbers from the overallAnalysis text
+  const scoreRegex = /\b\d{2}\b/g;
+  const matchResults = scoreAnalysis.match(scoreRegex);
+  const scores = matchResults ? matchResults.map(Number) : [];
+
+  // Filter out the number 100
+  const scoresNot100 = scores.filter(score => score !== 100);
+
+  const overallScore = scoresNot100[0];
+
+  const newResume = new Resume({
+    pdfName: fileName,
+    data: file,
+    analysisResult: {
+      overAllScore: overallScore,
+      overAllFeedBack: overallAnalysis,
+      educationFeedBack: educationAnalysis,
+      experienceFeedBack: workAnalysis,
+    },
+    user: userId,
+  });
+
+  // Save the new resume to the database
+  const savedResume = await newResume.save();
+  return savedResume;
+};
+
 module.exports = {
     getResumesByUserId,
     deleteResumeById,
+    saveResume,
   };
   

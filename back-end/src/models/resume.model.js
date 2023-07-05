@@ -4,15 +4,13 @@ const { toJSON, paginate } = require('./plugins');
 const resumeSchema = mongoose.Schema(
   {
     pdfName: String,
-    upload_time: Date,
-    data: Buffer,
+    data: String,
     jsonData: mongoose.Schema.Types.Mixed,
     analysisResult: {
       overAllScore: Number,
       overAllFeedBack: String,
       educationFeedBack: String,
       experienceFeedBack: String,
-      summaryFeedBack: String,
     },
     user: { 
       type: mongoose.Schema.Types.ObjectId, 
