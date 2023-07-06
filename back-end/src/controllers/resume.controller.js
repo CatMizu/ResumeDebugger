@@ -17,9 +17,10 @@ const scoreQuestion = "This is my resume, give it a score out of 100. ";
 const submitResume = catchAsync(async (req, res) => {
   // 1. Convert the PDF resume to text.
   const resumeText = await vertexService.convertPdfToText(req.body.file);
+  
   // 2. Parse the resume text into a structured JSON object.
-  // TODO: const resumeJson = await resumeParser.parseResume(resumeText, 'json');
-  const resumeJson = await resumeService.parseResume(resumeText);
+  const resumeJson = await resumeService.parseResumeFromString(resumeText);
+
   // 3. Generate a response to the resume using the Vertex AI language model.
   const educationAnalysis = await vertexService.generateResponseToQuestion(resumeText, educationQuestion);
   const workAnalysis = await vertexService.generateResponseToQuestion(resumeText, workQuestion);
@@ -35,6 +36,7 @@ const submitResume = catchAsync(async (req, res) => {
     workAnalysis,
     overallAnalysis,
     scoreAnalysis,
+    resumeJson
   );
 
   res.status(httpStatus.CREATED).send(savedResume);

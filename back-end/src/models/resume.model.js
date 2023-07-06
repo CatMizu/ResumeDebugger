@@ -5,7 +5,7 @@ const resumeSchema = mongoose.Schema(
   {
     pdfName: String,
     data: String,
-    jsonData: mongoose.Schema.Types.Mixed,
+    parsedResume: mongoose.Schema.Types.Mixed,
     analysisResult: {
       overAllScore: Number,
       overAllFeedBack: String,
