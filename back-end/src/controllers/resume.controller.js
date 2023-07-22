@@ -10,7 +10,7 @@ const workQuestion = "Assuming you are a professional headhunter, please evaluat
 work experience section of the above resume, and provide some suggestions for \
 improvement, Please be as detailed as possible.";
 const overallQuestion = "Suppose you are a professional headhunter, please give an \
-overall evaluation of the above resume information, give a score out of 100, and \
+overall evaluation of the above resume information, and \
 provide some suggestions for improvement, Please be as detailed as possible.";
 const scoreQuestion = "This is my resume, give it a score out of 100. ";
 
